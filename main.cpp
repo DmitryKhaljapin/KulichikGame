@@ -6,10 +6,13 @@
 
 #include "./window/MainWindow/MainWindow.hpp"
 #include "./Hero/Hero.hpp"
+#include "./Map/Map.hpp"
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int nCmdShow) {
 
-    Hero hero;
+    Map map;
+
+    Hero hero(&map);
 
     MainWindow main_window(L"Kulichik Game", 0, 0, 1540, 825, &hero);
 

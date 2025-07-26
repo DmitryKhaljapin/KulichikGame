@@ -10,6 +10,7 @@
         "${fileDirname}\\main.cpp",
         "${fileDirname}\\window\\MainWindow\\MainWindow.cpp",
         "${fileDirname}\\Hero\\Hero.cpp",
+        "${fileDirname}\\Map\\Map.cpp",
         "-o",
         "${fileDirname}\\${fileBasenameNoExtension}.exe",
         "-mwindows",

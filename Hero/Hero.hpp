@@ -2,6 +2,7 @@
 #include <cstdint>
 
 #include "../config/consts.hpp"
+#include "../Map/Map.hpp"
 
 class Hero {
     int width_pixels;
@@ -14,8 +15,9 @@ class Hero {
         int y = 0;
 
         int size = 0;
-        //add map
-        Hero();
+        Map* map;
+        
+        Hero(Map* map);
         ~Hero();
 
         uint32_t** getPixels() const;

@@ -15,7 +15,7 @@ void MainWindow::drawHero() const {
     uint32_t** pixels = this->hero->getPixels();
 
     int heroSize = this->hero->size;
-    int x = this->hero->x * BLOCK + PADDING;
+    int x = this->hero->x * BLOCK + PADDING + (BLOCK - HERO_PIXEL_WIDTH) / 2;
     int y = this->hero->y * BLOCK + PADDING;
 
     for (size_t i = 0; i < HERO_PIXEL_HEIGHT; ++i) {
@@ -34,6 +34,21 @@ void MainWindow::drawHero() const {
             pRenderTarget->FillRectangle(pixel, pBrush);
         }
     }
+}
+
+void MainWindow::drawMap() const {
+	for (int i = 0; i < MAP_HEIGHT; ++i) {
+		for (int j = 0; j < MAP_WIDTH; ++j) {
+			if (this->hero->map->getMap()[i][j] == 0) pBrush->SetColor(D2D1::ColorF(GROUND));
+			if (this->hero->map->getMap()[i][j] == 1) pBrush->SetColor(D2D1::ColorF(WALL));
+
+			int x = j * BLOCK + PADDING;
+			int y = i * BLOCK + PADDING;
+
+			D2D1_RECT_F block = D2D1::Rect(x, y, x + BLOCK, y + BLOCK);
+			pRenderTarget->FillRectangle(block, pBrush);
+		}
+	}
 }
 
 MainWindow::MainWindow(const wchar_t* window_name, int x, int y, int width, int height, Hero* hero): 
@@ -91,6 +106,7 @@ void MainWindow::onPaint() {
         pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::SkyBlue)); // select another color
     
         //add draw map hero score;
+        drawMap();
         drawHero();
 
         hr = pRenderTarget->EndDraw();

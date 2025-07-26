@@ -20,6 +20,7 @@ class MainWindow : public BaseWindow<MainWindow> {
     void resize();
 
     void drawHero() const;
+    void drawMap() const;
 
     public: 
         MainWindow(const wchar_t*, int, int, int, int, Hero*);
