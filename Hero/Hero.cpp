@@ -67,4 +67,10 @@ void Hero::move(int key_code) {
             break;
         }
     }
+
+    for (size_t i = 0; i < LOOT_COUNT; ++i) {
+        Loot* loot = this->map->loots[i];
+
+        if (loot->x == this->x && loot->y == this->y) loot->looted = true;
+    }
 }

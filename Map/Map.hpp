@@ -1,13 +1,16 @@
 #pragma once
 
 #include "../config/consts.hpp"
+#include "../Loot/Loot.hpp"
 
 class Map {
     int** data_;
-
+    
     public:
-    Map();
-    ~Map();
+        Loot** loots = 0;
+        
+        Map();
+        ~Map();
 
     int** getMap() const;
 };

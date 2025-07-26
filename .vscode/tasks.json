@@ -11,6 +11,7 @@
         "${fileDirname}\\window\\MainWindow\\MainWindow.cpp",
         "${fileDirname}\\Hero\\Hero.cpp",
         "${fileDirname}\\Map\\Map.cpp",
+        "${fileDirname}\\Loot\\Loot.cpp",
         "-o",
         "${fileDirname}\\${fileBasenameNoExtension}.exe",
         "-mwindows",

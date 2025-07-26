@@ -9,6 +9,9 @@ Map::Map() {
     mapFile.seekg(0);
     
     this->data_ = new int* [MAP_HEIGHT];
+    this->loots = new Loot* [LOOT_COUNT];
+
+    int current_loot_count = 0;
     
     for (size_t i = 0; i < MAP_HEIGHT; ++i) {
         this->data_[i] = new int[MAP_WIDTH];
@@ -18,6 +21,13 @@ Map::Map() {
             mapFile.get(symbol);
 
             if (symbol == '\n') mapFile.get(symbol);
+            
+            if (symbol == '$') {
+                Loot* loot = new Loot(j, i);
+                this->loots[current_loot_count] = loot;
+                
+                ++current_loot_count;
+            }
 
             if (symbol == '#') {
                 this->data_[i][j] = 1;

@@ -12,3 +12,9 @@
 //map
 #define MAP_WIDTH 32
 #define MAP_HEIGHT 16
+
+//loot
+#define LOOT_SIZE 1
+#define LOOT_WIDTH 48
+#define LOOT_HEIGHT 48
+#define LOOT_COUNT 6

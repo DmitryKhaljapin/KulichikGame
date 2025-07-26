@@ -19,8 +19,9 @@ class MainWindow : public BaseWindow<MainWindow> {
     void onPaint();
     void resize();
 
-    void drawHero() const;
     void drawMap() const;
+    void drawHero() const;
+    void drawLoot() const;
 
     public: 
         MainWindow(const wchar_t*, int, int, int, int, Hero*);

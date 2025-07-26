@@ -51,6 +51,39 @@ void MainWindow::drawMap() const {
 	}
 }
 
+void MainWindow::drawLoot() const {
+    int lootSize = LOOT_SIZE;
+
+    for (int l = 0; l < LOOT_COUNT; ++l) {
+        Loot* loot = this->hero->map->loots[l];
+
+        if (loot->looted) continue;
+
+        uint32_t** pixels = loot->getPixels();
+
+        int x = loot->x * BLOCK + PADDING;
+        int y = loot->y * BLOCK + PADDING;
+    
+        for (int i = 0; i < LOOT_HEIGHT; ++i) {
+            for (int j = 0; j < LOOT_WIDTH; ++j) {
+                uint32_t color = pixels[i][j];
+         
+                if (color == 0x000000) color = GROUND;
+
+                pBrush->SetColor(D2D1::ColorF(color));
+
+                D2D1_RECT_F pixel = D2D1::Rect(
+                    x + j * lootSize,
+                    y + i * lootSize,
+                    x + j * lootSize + lootSize,
+                    y + i * lootSize + lootSize);
+                
+                pRenderTarget->FillRectangle(pixel, pBrush);
+            }
+        }
+    }
+}
+
 MainWindow::MainWindow(const wchar_t* window_name, int x, int y, int width, int height, Hero* hero): 
     BaseWindow(window_name, x, y, width, height),
     pFactory(NULL),
@@ -107,6 +140,7 @@ void MainWindow::onPaint() {
     
         //add draw map hero score;
         drawMap();
+        drawLoot();
         drawHero();
 
         hr = pRenderTarget->EndDraw();
