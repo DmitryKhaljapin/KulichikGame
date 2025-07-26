@@ -7,7 +7,8 @@
       "args": [
         "-fdiagnostics-color=always",
         "-g",
-        "${file}",
+        "${fileDirname}\\main.cpp",
+        "${fileDirname}\\window\\MainWindow\\MainWindow.cpp",
         "-o",
         "${fileDirname}\\${fileBasenameNoExtension}.exe",
         "-mwindows",
