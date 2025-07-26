@@ -4,6 +4,7 @@
 #include <dwrite.h>
 
 #include "../BaseWindow/BaseWindow.hpp"
+#include "../../Hero/Hero.hpp"
 
 class MainWindow : public BaseWindow<MainWindow> {
     ID2D1Factory* pFactory;
@@ -11,13 +12,17 @@ class MainWindow : public BaseWindow<MainWindow> {
 
     ID2D1SolidColorBrush* pBrush;
 
+    Hero* hero = 0;
+
     HRESULT createGraphicsResources();
     void discardGraphicsResources();
     void onPaint();
     void resize();
 
+    void drawHero() const;
+
     public: 
-        MainWindow(const wchar_t*, int, int, int, int);
+        MainWindow(const wchar_t*, int, int, int, int, Hero*);
 
         PCWSTR className() const;
         LRESULT handleMessage(UINT, WPARAM, LPARAM);

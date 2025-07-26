@@ -5,9 +5,13 @@
 #include <windows.h>
 
 #include "./window/MainWindow/MainWindow.hpp"
+#include "./Hero/Hero.hpp"
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int nCmdShow) {
-    MainWindow main_window(L"Kulichik Game", 0, 0, 1540, 825);
+
+    Hero hero;
+
+    MainWindow main_window(L"Kulichik Game", 0, 0, 1540, 825, &hero);
 
     if (!main_window.create(WS_OVERLAPPEDWINDOW)) return 0;
 

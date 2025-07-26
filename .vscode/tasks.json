@@ -9,6 +9,7 @@
         "-g",
         "${fileDirname}\\main.cpp",
         "${fileDirname}\\window\\MainWindow\\MainWindow.cpp",
+        "${fileDirname}\\Hero\\Hero.cpp",
         "-o",
         "${fileDirname}\\${fileBasenameNoExtension}.exe",
         "-mwindows",

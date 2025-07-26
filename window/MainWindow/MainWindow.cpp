@@ -1,3 +1,7 @@
+#include <cstdint>
+#include <d2d1.h>
+
+#include "../../config/colors.hpp"
 #include "./MainWindow.hpp"
 
 template<class T> void SafeRelease(T** ppT) {
@@ -7,12 +11,37 @@ template<class T> void SafeRelease(T** ppT) {
 	}
 }
 
+void MainWindow::drawHero() const {
+    uint32_t** pixels = this->hero->getPixels();
 
-MainWindow::MainWindow(const wchar_t* window_name, int x, int y, int width, int height): 
+    int heroSize = this->hero->size;
+    int x = this->hero->x * BLOCK + PADDING;
+    int y = this->hero->y * BLOCK + PADDING;
+
+    for (size_t i = 0; i < HERO_PIXEL_HEIGHT; ++i) {
+        for (size_t j = 0; j < HERO_PIXEL_WIDTH; ++j) {
+            uint32_t color = pixels[i][j];
+            if (color == 0x000000) color = GROUND;
+
+            pBrush->SetColor(D2D1::ColorF(color));
+
+            D2D1_RECT_F pixel = D2D1::Rect(
+                x + j * heroSize,
+                y + i * heroSize,
+                x + j * heroSize + heroSize,
+                y + i * heroSize + heroSize);
+            
+            pRenderTarget->FillRectangle(pixel, pBrush);
+        }
+    }
+}
+
+MainWindow::MainWindow(const wchar_t* window_name, int x, int y, int width, int height, Hero* hero): 
     BaseWindow(window_name, x, y, width, height),
     pFactory(NULL),
     pRenderTarget(NULL),
-    pBrush(NULL) {};
+    pBrush(NULL), 
+    hero(hero) {};
 
 PCWSTR MainWindow::className() const {
     return L"Main class window";
@@ -62,6 +91,7 @@ void MainWindow::onPaint() {
         pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::SkyBlue)); // select another color
     
         //add draw map hero score;
+        drawHero();
 
         hr = pRenderTarget->EndDraw();
 
@@ -112,7 +142,8 @@ LRESULT MainWindow::handleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam) {
             return 0;
         }
         case WM_KEYDOWN: {
-            // implement later
+            this->hero->move(wParam);
+            onPaint();
             return 0;
         }
 
