@@ -5,4 +5,5 @@ enum colors {
     GAME_FIELD = 0x87CEEB,
     WALL = 0xA67C00,
 
+    SCORE_COLOR = 0xFFFFFFF,
 };

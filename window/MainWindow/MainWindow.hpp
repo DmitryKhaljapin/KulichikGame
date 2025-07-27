@@ -7,10 +7,13 @@
 #include "../../Hero/Hero.hpp"
 
 class MainWindow : public BaseWindow<MainWindow> {
-    ID2D1Factory* pFactory;
-    ID2D1HwndRenderTarget* pRenderTarget;
+    ID2D1Factory* pFactory = nullptr;
+    ID2D1HwndRenderTarget* pRenderTarget = nullptr;
 
-    ID2D1SolidColorBrush* pBrush;
+	IDWriteFactory* pDWriteFactory = nullptr;
+	IDWriteTextFormat* pTextFormat = nullptr;
+
+    ID2D1SolidColorBrush* pBrush = nullptr;
 
     Hero* hero = 0;
 
@@ -22,6 +25,7 @@ class MainWindow : public BaseWindow<MainWindow> {
     void drawMap() const;
     void drawHero() const;
     void drawLoot() const;
+    void drawScore() const;
 
     public: 
         MainWindow(const wchar_t*, int, int, int, int, Hero*);

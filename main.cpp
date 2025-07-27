@@ -14,7 +14,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine
 
     Hero hero(&map);
 
-    MainWindow main_window(L"Kulichik Game", 0, 0, 1540, 825, &hero);
+    MainWindow main_window(L"Kulichik Game", 0, 0, 1540, 845, &hero);
 
     if (!main_window.create(WS_OVERLAPPEDWINDOW)) return 0;
 

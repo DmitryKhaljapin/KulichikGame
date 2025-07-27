@@ -2,6 +2,8 @@
 #include <d2d1.h>
 
 #include "../../config/colors.hpp"
+#include "../../config/font.hpp"
+
 #include "./MainWindow.hpp"
 
 template<class T> void SafeRelease(T** ppT) {
@@ -84,6 +86,28 @@ void MainWindow::drawLoot() const {
     }
 }
 
+
+void MainWindow::drawScore() const {
+
+	D2D1_RECT_F textRect = D2D1::RectF(
+		static_cast<FLOAT>(20),
+		static_cast<FLOAT>(16 * BLOCK),
+		static_cast<FLOAT>(20 + 16 * BLOCK),
+		static_cast<FLOAT>(16 * BLOCK + BLOCK)
+	);
+
+	pBrush->SetColor(D2D1::ColorF(SCORE_COLOR));
+
+	pRenderTarget->DrawText(
+		L"SCORE: 0020",                       
+	    11,               
+		pTextFormat,                  
+		textRect,                       
+		pBrush                        
+	);
+
+}
+
 MainWindow::MainWindow(const wchar_t* window_name, int x, int y, int width, int height, Hero* hero): 
     BaseWindow(window_name, x, y, width, height),
     pFactory(NULL),
@@ -111,6 +135,26 @@ HRESULT MainWindow::createGraphicsResources() {
 
             &pRenderTarget);
 
+		if (pDWriteFactory == NULL) {
+			hr = DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED,
+				__uuidof(IDWriteFactory),
+				reinterpret_cast<IUnknown**>(&pDWriteFactory)
+			);
+		}
+
+        Font font;
+
+        hr = pDWriteFactory->CreateTextFormat(
+            font.family,
+            nullptr,
+            font.weight,
+            font.style,
+            font.stretch,
+            font.size,
+            L"en-US",                
+            &pTextFormat
+        );
+
         if (SUCCEEDED(hr)) {
             const D2D1_COLOR_F color = D2D1::ColorF(0x0000000); //fix the color 
             hr = pRenderTarget->CreateSolidColorBrush(color, &pBrush);
@@ -123,7 +167,8 @@ HRESULT MainWindow::createGraphicsResources() {
 void MainWindow::discardGraphicsResources() {
     SafeRelease(&pRenderTarget);
     SafeRelease(&pBrush); 
-    // add other resourses;
+    SafeRelease(&pDWriteFactory);
+    SafeRelease(&pTextFormat);
 }
 
 void MainWindow::onPaint() {
@@ -138,10 +183,10 @@ void MainWindow::onPaint() {
 
         pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::SkyBlue)); // select another color
     
-        //add draw map hero score;
         drawMap();
         drawLoot();
         drawHero();
+        drawScore();
 
         hr = pRenderTarget->EndDraw();
 
