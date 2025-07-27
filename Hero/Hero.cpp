@@ -19,7 +19,6 @@ Hero::Hero(Map* map):
     height_pixels(HERO_PIXEL_HEIGHT), 
     x(state.x_start),
     y(state.y_start),
-    size(HERO_SIZE),
     map(map) {
         this->pixels = new uint32_t* [height_pixels];
         

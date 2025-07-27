@@ -22,11 +22,15 @@ class MainWindow : public BaseWindow<MainWindow> {
     void onPaint();
     void resize();
 
+    void drawLoot(Loot*, int) const;
+
     void drawMap() const;
-    void drawHero() const;
-    void drawLoot() const;
+    void drawHero(int) const;
+    void drawLoots() const;
     void drawScore() const;
     void drawLevel() const;
+
+    void drawStartScreen() const;
 
     public: 
         MainWindow(const wchar_t*, int, int, int, int, Hero*);

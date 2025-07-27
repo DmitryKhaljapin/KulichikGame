@@ -1,6 +1,7 @@
 #include <cstdint>
 #include <d2d1.h>
 #include <string>
+#include <windowsx.h>
 
 #include "../../config/colors.hpp"
 #include "../../config/font.hpp"
@@ -17,10 +18,9 @@ template<class T> void SafeRelease(T** ppT) {
 	}
 }
 
-void MainWindow::drawHero() const {
+void MainWindow::drawHero(int size) const {
     uint32_t** pixels = this->hero->getPixels();
 
-    int heroSize = this->hero->size;
     int x = this->hero->x * BLOCK + PADDING + (BLOCK - HERO_PIXEL_WIDTH) / 2;
     int y = this->hero->y * BLOCK + PADDING;
 
@@ -32,10 +32,35 @@ void MainWindow::drawHero() const {
             pBrush->SetColor(D2D1::ColorF(color));
 
             D2D1_RECT_F pixel = D2D1::Rect(
-                x + j * heroSize,
-                y + i * heroSize,
-                x + j * heroSize + heroSize,
-                y + i * heroSize + heroSize);
+                x + j * size,
+                y + i * size,
+                x + j * size + size,
+                y + i * size + size);
+            
+            pRenderTarget->FillRectangle(pixel, pBrush);
+        }
+    }
+}
+
+void MainWindow::drawLoot(Loot* loot, int lootSize) const {
+    uint32_t** pixels = loot->getPixels();
+
+    int x = loot->x * BLOCK + PADDING;
+    int y = loot->y * BLOCK + PADDING;
+
+    for (int i = 0; i < LOOT_HEIGHT; ++i) {
+        for (int j = 0; j < LOOT_WIDTH; ++j) {
+            uint32_t color = pixels[i][j];
+        
+            if (color == 0x000000) color = GROUND;
+
+            pBrush->SetColor(D2D1::ColorF(color));
+
+            D2D1_RECT_F pixel = D2D1::Rect(
+                x + j * lootSize,
+                y + i * lootSize,
+                x + j * lootSize + lootSize,
+                y + i * lootSize + lootSize);
             
             pRenderTarget->FillRectangle(pixel, pBrush);
         }
@@ -57,36 +82,15 @@ void MainWindow::drawMap() const {
 	}
 }
 
-void MainWindow::drawLoot() const {
+void MainWindow::drawLoots() const {
     int lootSize = LOOT_SIZE;
 
     for (int l = 0; l < LOOT_COUNT; ++l) {
         Loot* loot = this->hero->map->loots[l];
 
         if (loot->looted) continue;
-
-        uint32_t** pixels = loot->getPixels();
-
-        int x = loot->x * BLOCK + PADDING;
-        int y = loot->y * BLOCK + PADDING;
-    
-        for (int i = 0; i < LOOT_HEIGHT; ++i) {
-            for (int j = 0; j < LOOT_WIDTH; ++j) {
-                uint32_t color = pixels[i][j];
-         
-                if (color == 0x000000) color = GROUND;
-
-                pBrush->SetColor(D2D1::ColorF(color));
-
-                D2D1_RECT_F pixel = D2D1::Rect(
-                    x + j * lootSize,
-                    y + i * lootSize,
-                    x + j * lootSize + lootSize,
-                    y + i * lootSize + lootSize);
-                
-                pRenderTarget->FillRectangle(pixel, pBrush);
-            }
-        }
+        
+        drawLoot(loot, lootSize);
     }
 }
 
@@ -136,6 +140,89 @@ void MainWindow::drawLevel() const {
 		textRect,                       
 		pBrush                        
 	);
+}
+
+void MainWindow::drawStartScreen() const {
+    pBrush->SetColor(D2D1::ColorF(GROUND));
+
+    D2D1_RECT_F block = D2D1::Rect(20, 20, 20 + 31 * BLOCK, 100 + 12 * BLOCK);
+    pRenderTarget->FillRectangle(block, pBrush);
+
+    drawHero(10);
+
+    Loot loot(12, 8);
+    
+    drawLoot(&loot, 5);
+
+	D2D1_RECT_F textRect = D2D1::RectF(
+		static_cast<FLOAT>(20 + 19 * BLOCK),
+		static_cast<FLOAT>(20),
+		static_cast<FLOAT>(20 + 19 * BLOCK + 15 * BLOCK),
+		static_cast<FLOAT>(20 + 3 * BLOCK)
+	);
+
+	pBrush->SetColor(D2D1::ColorF(SCORE_COLOR));
+
+    Font font;
+
+    IDWriteTextFormat* textFormat = nullptr;
+
+    pDWriteFactory->CreateTextFormat(
+        L"Comic Sans MS",
+        nullptr,
+        DWRITE_FONT_WEIGHT_ULTRA_BLACK,
+        font.style,
+        DWRITE_FONT_STRETCH_EXTRA_EXPANDED,
+        82.9f,
+        L"en-US",                
+        &textFormat
+    );
+
+	pRenderTarget->DrawText(
+		L"Kulickik Game",                       
+	    14,               
+		textFormat,                  
+		textRect,                       
+		pBrush                        
+	);
+
+    pBrush->SetColor(D2D1::ColorF(WALL));
+
+    D2D1_RECT_F start_button = D2D1::Rect(
+        START_BUTTON_X, 
+        START_BUTTON_Y, 
+        START_BUTTON_X + START_BUTTON_WIDTH, 
+        START_BUTTON_Y + START_BUTTON_HEIGHT);
+    pRenderTarget->FillRectangle(start_button, pBrush);
+
+    pBrush->SetColor(D2D1::ColorF(GROUND));
+
+    D2D1_RECT_F start_button_front = D2D1::Rect(
+        START_BUTTON_X + 20, 
+        START_BUTTON_Y + 20, 
+        START_BUTTON_X + START_BUTTON_WIDTH - 5, 
+        START_BUTTON_Y + START_BUTTON_HEIGHT - 5);
+    pRenderTarget->FillRectangle(start_button_front, pBrush);
+
+
+    D2D1_RECT_F buttonTextRect = D2D1::RectF(
+		static_cast<FLOAT>(20 + START_BUTTON_X),
+		static_cast<FLOAT>(20 + START_BUTTON_Y),
+		static_cast<FLOAT>(20 + START_BUTTON_X + 5 * BLOCK),
+		static_cast<FLOAT>(20 + START_BUTTON_Y + 3 * BLOCK)
+	);
+
+	pBrush->SetColor(D2D1::ColorF(SCORE_COLOR));
+
+    	pRenderTarget->DrawText(
+		L"PLAY",                       
+	    5,               
+		textFormat,                  
+		buttonTextRect,                       
+		pBrush                        
+	);
+
+
 }
 
 MainWindow::MainWindow(const wchar_t* window_name, int x, int y, int width, int height, Hero* hero): 
@@ -213,11 +300,17 @@ void MainWindow::onPaint() {
 
         pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::SkyBlue)); // select another color
     
-        drawMap();
-        drawLoot();
-        drawHero();
-        drawScore();
-        drawLevel();
+        if (state.stage == START_MENU) {
+            drawStartScreen();
+        }
+
+        if (state.stage == ON_GOING) {
+            drawMap();
+            drawLoots();
+            drawHero(HERO_SIZE);
+            drawScore();
+            drawLevel();
+        }
 
         hr = pRenderTarget->EndDraw();
 
@@ -270,6 +363,22 @@ LRESULT MainWindow::handleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam) {
         case WM_KEYDOWN: {
             this->hero->move(wParam);
             onPaint();
+            return 0;
+        }
+        case WM_LBUTTONDOWN: {
+            int x = GET_X_LPARAM(lParam);
+            int y = GET_Y_LPARAM(lParam);
+
+            if ( 
+                x > START_BUTTON_X && 
+                x < START_BUTTON_X + START_BUTTON_WIDTH &&
+                y > START_BUTTON_Y &&
+                y < START_BUTTON_Y + START_BUTTON_HEIGHT
+            ) {
+                state.stage = ON_GOING;
+                onPaint();
+
+            }
             return 0;
         }
 

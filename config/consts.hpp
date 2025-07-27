@@ -19,3 +19,9 @@
 #define LOOT_WIDTH 48
 #define LOOT_HEIGHT 48
 #define LOOT_COUNT 6
+
+// start button // fix me
+#define START_BUTTON_X 1100
+#define START_BUTTON_Y 260
+#define START_BUTTON_WIDTH 240
+#define START_BUTTON_HEIGHT 144

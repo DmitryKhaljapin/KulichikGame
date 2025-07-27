@@ -15,8 +15,6 @@ class Hero {
     public:
         int x = 0;
         int y = 0;
-
-        int size = 0;
         Map* map;
         
         Hero(Map* map);
