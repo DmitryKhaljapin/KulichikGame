@@ -1,5 +1,6 @@
 #include <cstdint>
 #include <d2d1.h>
+#include <string>
 
 #include "../../config/colors.hpp"
 #include "../../config/font.hpp"
@@ -98,9 +99,13 @@ void MainWindow::drawScore() const {
 
 	pBrush->SetColor(D2D1::ColorF(SCORE_COLOR));
 
+    std::string score_value = std::to_string(20);
+    std::string score_text = "SCORE: ";
+    std::string score = score_text + score_value;
+
 	pRenderTarget->DrawText(
-		L"SCORE: 0020",                       
-	    11,               
+		std::wstring(score.begin(), score.end()).data(),                       
+	    score.length(),               
 		pTextFormat,                  
 		textRect,                       
 		pBrush                        
