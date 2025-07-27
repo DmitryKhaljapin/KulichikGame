@@ -1,7 +1,7 @@
 //general
 #define BLOCK 48
 #define PADDING 0
-#define LEVELS 2
+#define LEVELS 5
 
 //hero
 #define HERO_SIZE 1
