@@ -25,3 +25,10 @@
 #define START_BUTTON_Y 260
 #define START_BUTTON_WIDTH 240
 #define START_BUTTON_HEIGHT 144
+
+// play again button // fix me
+
+#define AGAIN_BUTTON_X 800
+#define AGAIN_BUTTON_Y 50
+#define AGAIN_BUTTON_WIDTH 200
+#define AGAIN_BUTTON_HEIGHT 70

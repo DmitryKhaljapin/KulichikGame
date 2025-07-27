@@ -221,8 +221,85 @@ void MainWindow::drawStartScreen() const {
 		buttonTextRect,                       
 		pBrush                        
 	);
+}
+
+void MainWindow::drawEndScreen() const {
+pBrush->SetColor(D2D1::ColorF(GROUND));
+
+    D2D1_RECT_F block = D2D1::Rect(20, 20, 20 + 31 * BLOCK, 100 + 12 * BLOCK);
+    pRenderTarget->FillRectangle(block, pBrush);
+
+    drawHero(10);
+
+    Loot loot1(8, 8);
+    drawLoot(&loot1, 5);
+    
+    Loot loot2(12, 8);
+    drawLoot(&loot2, 5);
+
+    Loot loot3(10, 3);
+    drawLoot(&loot3, 5);
+
+    Loot loot4(16, 8);
+    drawLoot(&loot4, 5);
+
+    Loot loot5(20, 8);
+    drawLoot(&loot5, 5);
+
+    Loot loot6(24, 8);
+    drawLoot(&loot6, 5);
+
+    Loot loot7(14, 3);
+    drawLoot(&loot7, 5);
+
+    Loot loot8(18, 3);
+    drawLoot(&loot8, 5);
+
+    Loot loot9(22, 3);
+    drawLoot(&loot9, 5);
+
+	D2D1_RECT_F textRect = D2D1::RectF(
+		static_cast<FLOAT>(20 + 19 * BLOCK),
+		static_cast<FLOAT>(20),
+		static_cast<FLOAT>(20 + 19 * BLOCK + 15 * BLOCK),
+		static_cast<FLOAT>(20 + 3 * BLOCK)
+	);
+
+    pBrush->SetColor(D2D1::ColorF(WALL));
+
+    D2D1_RECT_F start_button = D2D1::Rect(
+        AGAIN_BUTTON_X, 
+        AGAIN_BUTTON_Y, 
+        AGAIN_BUTTON_X + AGAIN_BUTTON_WIDTH, 
+        AGAIN_BUTTON_Y + AGAIN_BUTTON_HEIGHT);
+    pRenderTarget->FillRectangle(start_button, pBrush);
+
+    pBrush->SetColor(D2D1::ColorF(GROUND));
+
+    D2D1_RECT_F start_button_front = D2D1::Rect(
+        AGAIN_BUTTON_X + 20, 
+        AGAIN_BUTTON_Y + 20, 
+        AGAIN_BUTTON_X + AGAIN_BUTTON_WIDTH - 5, 
+        AGAIN_BUTTON_Y + AGAIN_BUTTON_HEIGHT - 5);
+    pRenderTarget->FillRectangle(start_button_front, pBrush);
 
 
+    D2D1_RECT_F buttonTextRect = D2D1::RectF(
+		static_cast<FLOAT>(20 + AGAIN_BUTTON_X),
+		static_cast<FLOAT>(20 + AGAIN_BUTTON_Y),
+		static_cast<FLOAT>(20 + AGAIN_BUTTON_X + 5 * BLOCK),
+		static_cast<FLOAT>(20 + AGAIN_BUTTON_Y + 3 * BLOCK)
+	);
+
+	pBrush->SetColor(D2D1::ColorF(SCORE_COLOR));
+
+    	pRenderTarget->DrawText(
+		L"PLAY AGAIN",                       
+	    11,               
+		pTextFormat,                  
+		buttonTextRect,                       
+		pBrush                        
+	);
 }
 
 MainWindow::MainWindow(const wchar_t* window_name, int x, int y, int width, int height, Hero* hero): 
@@ -300,17 +377,25 @@ void MainWindow::onPaint() {
 
         pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::SkyBlue)); // select another color
     
-        if (state.stage == START_MENU) {
-            drawStartScreen();
+        switch(state.stage) {
+            case START_MENU: {
+                drawStartScreen();
+                break;
+            }
+            case ON_GOING: {
+                drawMap();
+                drawLoots();
+                drawHero(HERO_SIZE);
+                drawScore();
+                drawLevel();
+                break;
+            }
+            case FINISH: {
+                drawEndScreen();
+                break;
+            }
         }
 
-        if (state.stage == ON_GOING) {
-            drawMap();
-            drawLoots();
-            drawHero(HERO_SIZE);
-            drawScore();
-            drawLevel();
-        }
 
         hr = pRenderTarget->EndDraw();
 
@@ -374,6 +459,17 @@ LRESULT MainWindow::handleMessage(UINT uMsg, WPARAM wParam, LPARAM lParam) {
                 x < START_BUTTON_X + START_BUTTON_WIDTH &&
                 y > START_BUTTON_Y &&
                 y < START_BUTTON_Y + START_BUTTON_HEIGHT
+            ) {
+                state.stage = ON_GOING;
+                onPaint();
+
+            }
+            
+            if ( 
+                x > AGAIN_BUTTON_X && 
+                x < AGAIN_BUTTON_X + AGAIN_BUTTON_WIDTH &&
+                y > AGAIN_BUTTON_Y &&
+                y < AGAIN_BUTTON_Y + AGAIN_BUTTON_HEIGHT
             ) {
                 state.stage = ON_GOING;
                 onPaint();

@@ -31,6 +31,7 @@ class MainWindow : public BaseWindow<MainWindow> {
     void drawLevel() const;
 
     void drawStartScreen() const;
+    void drawEndScreen() const;
 
     public: 
         MainWindow(const wchar_t*, int, int, int, int, Hero*);
