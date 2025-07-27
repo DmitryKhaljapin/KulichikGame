@@ -6,6 +6,9 @@
 #include "../../config/font.hpp"
 
 #include "./MainWindow.hpp"
+#include "../../GameState/GameState.hpp"
+
+extern GameState state;
 
 template<class T> void SafeRelease(T** ppT) {
 	if (*ppT) {
@@ -99,7 +102,7 @@ void MainWindow::drawScore() const {
 
 	pBrush->SetColor(D2D1::ColorF(SCORE_COLOR));
 
-    std::string score_value = std::to_string(20);
+    std::string score_value = std::to_string(state.score);
     std::string score_text = "SCORE: ";
     std::string score = score_text + score_value;
 

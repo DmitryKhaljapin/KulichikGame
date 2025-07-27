@@ -1,11 +1,14 @@
 #include "Hero.hpp"
 #include "../resorces/hero.hpp"
+#include "../GameState/GameState.hpp"
+
+extern GameState state;
 
 Hero::Hero(Map* map): 
     width_pixels(HERO_PIXEL_WIDTH), 
     height_pixels(HERO_PIXEL_HEIGHT), 
-    x(HERO_START_X),
-    y(HERO_START_Y),
+    x(state.x_start),
+    y(state.y_start),
     size(HERO_SIZE),
     map(map) {
         this->pixels = new uint32_t* [height_pixels];
@@ -71,6 +74,9 @@ void Hero::move(int key_code) {
     for (size_t i = 0; i < LOOT_COUNT; ++i) {
         Loot* loot = this->map->loots[i];
 
-        if (loot->x == this->x && loot->y == this->y) loot->looted = true;
+        if (loot->x == this->x && loot->y == this->y) {
+            if (!(loot->looted)) state.score += 10;
+            loot->looted = true;
+        } 
     }
 }

@@ -7,6 +7,9 @@
 #include "./window/MainWindow/MainWindow.hpp"
 #include "./Hero/Hero.hpp"
 #include "./Map/Map.hpp"
+#include "./GameState/GameState.hpp"
+
+GameState state;
 
 int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PWSTR pCmdLine, int nCmdShow) {
 

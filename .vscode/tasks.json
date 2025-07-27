@@ -12,6 +12,7 @@
         "${fileDirname}\\Hero\\Hero.cpp",
         "${fileDirname}\\Map\\Map.cpp",
         "${fileDirname}\\Loot\\Loot.cpp",
+        "${fileDirname}\\GameState\\GameState.cpp",
         "-o",
         "${fileDirname}\\${fileBasenameNoExtension}.exe",
         "-mwindows",
