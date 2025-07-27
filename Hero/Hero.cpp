@@ -4,6 +4,16 @@
 
 extern GameState state;
 
+ void Hero::upLevel() {
+    state.upLevel();
+    
+    this->map->update();
+    this->x = state.x_start;
+    this->y = state.y_start;
+
+    state.loot_left = (LOOT_COUNT);
+}
+
 Hero::Hero(Map* map): 
     width_pixels(HERO_PIXEL_WIDTH), 
     height_pixels(HERO_PIXEL_HEIGHT), 
@@ -75,8 +85,14 @@ void Hero::move(int key_code) {
         Loot* loot = this->map->loots[i];
 
         if (loot->x == this->x && loot->y == this->y) {
-            if (!(loot->looted)) state.score += 10;
-            loot->looted = true;
+            if (!(loot->looted)) {
+                state.score += 10;
+                --state.loot_left;
+
+                loot->looted = true;
+
+                if (state.loot_left == 0) upLevel();
+            }
         } 
     }
 }

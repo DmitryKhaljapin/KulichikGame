@@ -26,6 +26,7 @@ class MainWindow : public BaseWindow<MainWindow> {
     void drawHero() const;
     void drawLoot() const;
     void drawScore() const;
+    void drawLevel() const;
 
     public: 
         MainWindow(const wchar_t*, int, int, int, int, Hero*);

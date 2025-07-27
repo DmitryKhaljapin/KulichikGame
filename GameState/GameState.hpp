@@ -15,6 +15,8 @@ class GameState {
         int x_start;
         int y_start;
 
+        int loot_left;
+
         GameState();
         void upLevel();
 };

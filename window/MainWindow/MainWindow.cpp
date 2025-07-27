@@ -90,7 +90,6 @@ void MainWindow::drawLoot() const {
     }
 }
 
-
 void MainWindow::drawScore() const {
 
 	D2D1_RECT_F textRect = D2D1::RectF(
@@ -113,7 +112,30 @@ void MainWindow::drawScore() const {
 		textRect,                       
 		pBrush                        
 	);
+}
 
+void MainWindow::drawLevel() const {
+
+	D2D1_RECT_F textRect = D2D1::RectF(
+		static_cast<FLOAT>(20 + 28 * BLOCK),
+		static_cast<FLOAT>(16 * BLOCK),
+		static_cast<FLOAT>(20 + 32 * BLOCK),
+		static_cast<FLOAT>(16 * BLOCK + BLOCK)
+	);
+
+	pBrush->SetColor(D2D1::ColorF(SCORE_COLOR));
+
+    std::string level_value = std::to_string(state.level);
+    std::string level_text = "LEVEL: ";
+    std::string level = level_text + level_value;
+
+	pRenderTarget->DrawText(
+		std::wstring(level.begin(), level.end()).data(),                       
+	    level.length(),               
+		pTextFormat,                  
+		textRect,                       
+		pBrush                        
+	);
 }
 
 MainWindow::MainWindow(const wchar_t* window_name, int x, int y, int width, int height, Hero* hero): 
@@ -195,6 +217,7 @@ void MainWindow::onPaint() {
         drawLoot();
         drawHero();
         drawScore();
+        drawLevel();
 
         hr = pRenderTarget->EndDraw();
 

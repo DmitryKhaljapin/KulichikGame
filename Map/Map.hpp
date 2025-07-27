@@ -5,6 +5,9 @@
 
 class Map {
     int** data_;
+
+    void createData(int);
+    void destoryData();
     
     public:
         Loot** loots = 0;
@@ -13,4 +16,5 @@ class Map {
         ~Map();
 
     int** getMap() const;
+    void update();
 };

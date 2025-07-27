@@ -10,6 +10,8 @@ class Hero {
     
     uint32_t** pixels;
 
+    void upLevel();
+
     public:
         int x = 0;
         int y = 0;
