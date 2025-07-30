@@ -9,7 +9,8 @@
 extern GameState state;
 
 void Map::createData(int level) {
- std::string path = "resorces/map" + std::to_string(state.level) + ".txt";
+    // fix me by a custom String implamentation
+    std::string path = "resorces/map" + std::to_string(state.level) + ".txt";
 
     std::ifstream mapFile;
     mapFile.open(path);

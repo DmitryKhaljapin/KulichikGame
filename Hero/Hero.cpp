@@ -34,6 +34,8 @@ uint32_t** Hero::getPixels() const {
 }
 
 void Hero::move(int key_code) {
+    if (state.stage != ON_GOING) return;
+    
     switch(key_code) {
         case 0x57: {
             int next_y = this->y - 1;
