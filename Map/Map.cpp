@@ -4,6 +4,7 @@
 #include "Map.hpp"
 #include "../config/consts.hpp"
 #include "../GameState/GameState.hpp"
+#include "../utils/deleteDynamicArray.hpp"
 
 extern GameState state;
 
@@ -53,11 +54,7 @@ void Map::createData(int level) {
 }
 
 void Map::destoryData()  {
-    for (size_t i = 0; i < MAP_HEIGHT; ++i) {
-        delete[] this->data_[i];
-    }
-
-    delete[] this->data_;
+    deleteDynamicArray(this->data_, MAP_HEIGHT);
 }
 
 Map::Map() {

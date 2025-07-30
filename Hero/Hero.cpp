@@ -2,6 +2,7 @@
 #include "../resorces/hero.hpp"
 #include "../GameState/GameState.hpp"
 #include "../utils/dynamicArray.hpp"
+#include "../utils/deleteDynamicArray.hpp"
 
 extern GameState state;
 
@@ -25,11 +26,7 @@ Hero::Hero(Map* map):
 }
 
 Hero::~Hero() {
-    for (size_t i = 0; i < height_pixels; ++i) {
-        delete[] this->pixels[i];
-    }
-
-    delete[] this->pixels;
+    deleteDynamicArray(this->pixels, height_pixels);
 }
 
 uint32_t** Hero::getPixels() const {
