@@ -1,6 +1,7 @@
 #include "Hero.hpp"
 #include "../resorces/hero.hpp"
 #include "../GameState/GameState.hpp"
+#include "../utils/dynamicArray.hpp"
 
 extern GameState state;
 
@@ -20,16 +21,7 @@ Hero::Hero(Map* map):
     x(state.x_start),
     y(state.y_start),
     map(map) {
-        this->pixels = new uint32_t* [height_pixels];
-        
-        // exclude as a template function to utils
-        for (size_t i = 0; i < height_pixels; ++i) {
-            this->pixels[i] = new uint32_t[width_pixels];
-
-            for (size_t j = 0; j < width_pixels; ++j) {
-                this->pixels[i][j] = image[i][j];
-            }
-        }
+        this->pixels = dynamicArray<HERO_PIXEL_HEIGHT, HERO_PIXEL_WIDTH>(image);
 }
 
 Hero::~Hero() {

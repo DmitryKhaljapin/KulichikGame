@@ -18,7 +18,8 @@
         "-mwindows",
         "-municode",
         "-ld2d1",
-        "-ldwrite"
+        "-ldwrite",
+        "--static"
       ],
       "options": {
         "cwd": "${fileDirname}"

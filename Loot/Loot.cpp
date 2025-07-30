@@ -1,17 +1,10 @@
 #include "Loot.hpp"
 #include "../config/consts.hpp"
 #include "../resorces/loot.hpp"
+#include "../utils/dynamicArray.hpp"
 
 Loot::Loot(int x, int y): x(x), y(y), looted(false) {
-    this->pixels = new uint32_t*[LOOT_HEIGHT];
-
-    for(size_t i = 0; i < LOOT_HEIGHT; ++i) {
-        this->pixels[i] = new uint32_t[LOOT_HEIGHT];
-
-        for (size_t j = 0; j < LOOT_WIDTH; ++j) {
-            this->pixels[i][j] = pringles[i][j];
-        }
-    }
+    this->pixels = dynamicArray<LOOT_HEIGHT, LOOT_WIDTH>(pringles);
 }
 
 Loot::~Loot() {
